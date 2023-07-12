@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /*https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/*/
+        #editing, #highlighting {
+            /* Both elements need the same text and space styling so they are directly on top of each other */
+            border: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #editing, #highlighting, #highlighting * {
+            /* Also add text styles to highlighing tokens */
+            font-size: 15pt;
+            font-family: monospace;
+            line-height: 20pt;
+            tab-size: 2;
+        }
+
+
+        #editing, #highlighting {
+            /* In the same place */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+        /* Move the textarea in front of the result */
+
+        #editing {
+            z-index: 1;
+        }
+
+        #highlighting {
+            z-index: 0;
+        }
+
+
+        /* Make textarea almost completely transparent */
+
+        #editing {
+            color: transparent;
+            background: transparent;
+            caret-color: white; /* Or choose your favourite color */
+        }
+
+        /* Can be scrolled */
+        #editing, #highlighting {
+            box-sizing: border-box;
+            padding: 3px;
+            overflow: auto;
+            white-space: nowrap; /* Allows textarea to scroll horizontally */
+        }
+
+        /* No resize on textarea */
+        #editing {
+            resize: none;
+        }
+
+        /* Paragraphs; First Image */
+        * {
+            font-family: "Fira Code", monospace;
+        }
+
+        p code {
+            border-radius: 2px;
+            background-color: #eee;
+            color: #111;
+        }
+
+        /* Syntax Highlighting from prism.js starts below, partly modified: */
+
+        /* PrismJS 1.23.0
+        https://prismjs.com/download.html#themes=prism-funky&languages=markup */
+        /**
+         * prism.js Funky theme
+         * Based on “Polyfilling the gaps” talk slides http://lea.verou.me/polyfilling-the-gaps/
+         * @author Lea Verou
+         */
+
+        code[class*="language-"],
+        pre[class*="language-"] {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 1em;
+            text-align: left;
+            white-space: pre;
+            word-spacing: normal;
+            word-break: normal;
+            word-wrap: normal;
+            line-height: 1.5;
+
+            -moz-tab-size: 4;
+            tab-size: 4;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            -ms-hyphens: none;
+            hyphens: none;
+        }
+
+        /* Code blocks */
+        pre[class*="language-"] {
+            overflow: auto;
+            background-color: #1C1D1F;
+        }
+
+        code[class*="language-"] {
+            color: white;
+        }
+
+        /* Inline code */
+        :not(pre) > code[class*="language-"] {
+            box-shadow: none;
+            white-space: normal;
+        }
+
+        /* End of prism.js syntax highlighting*/
+    </style>
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>-->
+</head>
+<body>
+<div style="height: 400px; position:relative; margin: 10px">
+    <textarea
+            data-gramm="false"
+            placeholder="Enter HTML Source Code"
+            id="editing"
+            spellcheck="false"
+            oninput="update(this.value); sync_scroll(this);"
+            onscroll="sync_scroll(this);"
+            onkeydown="check_tab(this, event);"
+    ></textarea>
+    <pre id="highlighting" aria-hidden="true" class="language-html">
+<code class="language-html" id="highlighting-content">
+&lt;span title=&quot;Start Typing&quot;&gt;Just start typing!&lt;/span&gt;
+</code>
+</pre>
+</div>
+<script>
+    function update(text) {
+        let result_element = document.querySelector("#highlighting-content")
+        // Handle final newlines (see article)
+        if (text[text.length - 1] === "\n") {
+            text += " "
+        }
+        // Update code
+        text = text.replace(new RegExp("&", "g"), "&amp;").replace(new RegExp("<", "g"), "&lt;") /* Global RegExp */
+
+        // Syntax Highlight
+        let regex = /^([^& ]*)([^&]*)&lt;-/mig
+        text = text.replace(regex, "<span style='color: red'>$1</span>$2<-")
+        result_element.innerHTML = text
+
+    }
+
+    function sync_scroll(element) {
+        /* Scroll result to scroll coords of event - sync with textarea */
+        let result_element = document.querySelector("#highlighting")
+        // Get and set x and y
+        result_element.scrollTop = element.scrollTop
+        result_element.scrollLeft = element.scrollLeft
+    }
+
+    function check_tab(element, event) {
+        let code = element.value
+        if (event.key === "Tab") {
+            /* Tab key pressed */
+            event.preventDefault() // stop normal
+            let before_tab = code.slice(0, element.selectionStart) // text before tab
+            let after_tab = code.slice(element.selectionEnd, element.value.length) // text after tab
+            let cursor_pos = element.selectionStart + 1 // where cursor moves after tab - moving forward by 1 char to after tab
+            element.value = before_tab + "\t" + after_tab // add tab char
+            // move cursor
+            element.selectionStart = cursor_pos
+            element.selectionEnd = cursor_pos
+            update(element.value) // Update text to include indent
+        }
+    }
+</script>
+<script>
+    const grammar = `
+Grammar         <- Spacing Definition+ EndOfFile
+
+Definition      <- Identifier {RuleName} LEFTARROW Expression {AddGrammar}
+#Expression     <- Sequence ( SLASH Sequence )*
+Expression      <- {ChoiceStart} Sequence {AddRule} (SLASH Sequence {AddRule})* {ChoiceEnd}
+#Sequence       <- Prefix*
+Sequence        <- {SequenceStart} (Prefix {AddRule})* {SequenceEnd}
+#Prefix         <- AND Action / ( AND / NOT )? Suffix
+Prefix          <- AND Action {SetConditionalPredicate}
+               / {PositiveLookaheadStart} AND Suffix {AddRule} {PositiveLookaheadEnd}
+               / {NegativeLookaheadStart} NOT Suffix {AddRule} {NegativeLookaheadEnd}
+               / Suffix
+#Suffix          <- Primary ( QUERY / STAR / PLUS )?
+Suffix          <- Primary ( QUERY {SetOptional} / STAR {SetZeroOrMore} / PLUS {SetOneOrMore} )?
+#Primary        <- Identifier !LEFTARROW / OPEN Expression CLOSE / Literal / Class / DOT / Action / BEGIN / END
+Primary         <- Identifier !LEFTARROW {SetRuleRef}
+               / OPEN Expression CLOSE
+               / Literal {SetMatchLiteral}
+               / Class {SetRange}
+               / DOT {SetMatchAny}
+               / Action {SetAction}
+               / BEGIN {CollectStart}
+               / END {CollectEnd}
+
+Identifier      <- < IdentStart IdentCont* > Spacing
+IdentStart      <- [a-zA-Z_]
+IdentCont       <- IdentStart / [0-9]
+Literal         <- ['] < ( !['] Char  )* > ['] Spacing
+                / ["] < ( !["] Char  )* > ["] Spacing
+Class           <- '[' < ( !']' Range )* > ']' Spacing
+Range           <- Char '-' Char / Char
+Char            <- '\\\\' [abefnrtv'"\\[\\]\\\\]
+                / '\\\\' [0-3][0-7][0-7]
+                / '\\\\' [0-7][0-7]?
+                / '\\\\' '-'
+                / !'\\\\' .
+LEFTARROW       <- '<-' Spacing
+SLASH           <- '/' Spacing
+AND             <- '&' Spacing
+NOT             <- '!' Spacing
+QUERY           <- '?' Spacing
+STAR            <- '*' Spacing
+PLUS            <- '+' Spacing
+OPEN            <- '(' Spacing
+CLOSE           <- ')' Spacing
+DOT             <- '.' Spacing
+Spacing         <- ( Space / Comment )*
+Comment         <- '#' ( !EndOfLine . )* EndOfLine
+Space           <- ' ' / '\\t' / EndOfLine
+EndOfLine       <- '\\r\\n' / '\\n' / '\\r'
+EndOfFile       <- !.
+Action          <- '{' < [^}]* > '}' Spacing
+BEGIN           <- '<' Spacing
+END             <- '>' Spacing
+    `
+    document.getElementById("editing").innerHTML = grammar
+    update(document.getElementById("editing").value)
+    sync_scroll(document.getElementById("editing"))
+
+
+    fetch("/MainPEG.elm").then(res => res.text())
+        .then(html => {
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(html, "text/html")
+            let code = doc.querySelector("body > script").innerText
+            code = code.replace(/\}\(this\)\);/gm, "}(packageScope))")
+            code = code.replace(/var app = Elm\.(.*?)\..*$/gm, "return packageScope.Elm.$1")
+            code = `const packageScope = {}; ${code}`
+            const fn = Function(code)
+            const Package = fn()
+            Package.init({node: document.body, flags: grammar})
+        })
+</script>
+
+</body>
+</html>

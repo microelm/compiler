@@ -1,0 +1,7 @@
+module Main.Test exposing (..)
+
+doAdd8And4 = (+) 8 4
+doSub8And4 = (-) 8 4
+doMul8And4 = (*) 8 4
+doDiv8And4 = (/) 8 4
+makeRemainderBy37And12 = remainderBy 37 12

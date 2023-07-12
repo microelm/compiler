@@ -1,0 +1,15 @@
+module
+
+   Main.Test
+
+ exposing
+
+   ( main )
+
+main
+      :
+  Int
+
+main
+=
+   3

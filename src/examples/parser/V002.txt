@@ -1,0 +1,11 @@
+File                <- ModuleDefinition Function+ EndOfFile
+ModuleDefinition    <- "module Main.Test exposing (..)"
+
+Function            <- EndOfLine+ FunctionName " = " FunctionReturn
+FunctionName        <- <variableDeclaration> {FunctionName}
+FunctionReturn      <- <intLiteral> {FunctionReturn}
+
+variableDeclaration <- [a-z_] [a-zA-Z0-9_']*
+intLiteral          <-  [0-9]+
+EndOfLine           <- '\r\n' / '\n' / '\r'
+EndOfFile           <- EndOfLine* !.

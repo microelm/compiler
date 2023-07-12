@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Wasm</title>
+</head>
+<body>
+<script type="module">
+    // function base64ToArrayBuffer(base64) {
+    //     const binary_string = window.atob(base64)
+    //     const len = binary_string.length
+    //     const bytes = new Uint8Array(len)
+    //     for (let i = 0; i < len; i++) {
+    //         bytes[i] = binary_string.charCodeAt(i)
+    //     }
+    //     return bytes.buffer
+    // }
+
+    import { getPackage } from "./script/elm.js"
+
+    (async () => {
+        const Package = await getPackage("/MainWasm.elm")
+        const app = Package.init({ node: document.body })
+        app.ports.sendMessage.subscribe(async (base64_string) => {
+            const bytes = Uint8Array.from(atob(base64_string), c => c.charCodeAt(0))
+            const importObject = {}
+            const wasm = await WebAssembly.instantiate(bytes, importObject)
+            Object.keys(wasm.instance.exports).map(fn => {
+                console.log(fn, wasm.instance.exports[fn](BigInt(35), BigInt(34)))
+            })
+        })
+
+
+
+    })()
+</script>
+
+</body>
+</html>

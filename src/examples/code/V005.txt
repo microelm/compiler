@@ -1,0 +1,17 @@
+module {- inline comment -}
+-- one-line comment
+Main.Test{- inline comment -}exposing ({- inline comment -}main ){- inline comment -}
+-- one-line comment
+
+main{- inline comment -- weird-stuff -}
+-- one-line comment
+
+ : {- inline comment -}
+-- one-line comment
+Int{- inline comment -}
+main{- inline comment -}
+-- one-line comment
+={- inline comment -}13 -- one-line comment {- inline comment -}
+{- inline comment -}
+
+   -- one-line comment

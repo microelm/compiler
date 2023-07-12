@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MicroElm</title>
+    <link rel="stylesheet" href="script/playground/reset.css">
+    <link rel="stylesheet" href="script/playground/editor.css">
+    <link rel="stylesheet" href="script/playground/form.css">
+    <style>
+        :root {
+            --color-background: #131313;
+            --color-surface: #1C1C1C;
+
+            --color-primary: #d8b4fe;
+            --color-secondary: #7dd3fc;
+            --color-secondary-dark1: #075985;
+            --color-secondary-middle: #0ea5e9; /*sky 500*/
+
+            --color-on-primary: var(--color-background);
+            --color-on-secondary: var(--color-background);
+            --color-on-surface: #DDDDDD
+        }
+
+        html {
+            overflow: hidden;
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            overflow: auto;
+        }
+
+        html, body {
+            background: var(--color-background);
+        }
+
+        html {
+            /*https://typeof.net/Iosevka/*/
+            font-family: -apple-system, BlinkMacSystemFont,
+            "Segoe UI", system-ui, Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+            "Helvetica Neue", sans-serif;
+        }
+
+
+        /*Geid System*/
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 40px 1fr 40px 1fr;
+            grid-auto-columns: 1fr;
+            gap: 4px;
+            padding: 4px;
+            grid-auto-flow: row;
+            grid-template-areas:
+    "code-select parser-select parser-select"
+    "code-editor parser-editor parser-editor"
+    "runtime-select run compiler-select"
+    "runtime-editor output output";
+        }
+
+        body > :nth-child(1) { /*selectCode*/
+            grid-area: code-select;
+            justify-self: left;
+        }
+
+        body > :nth-child(2) { /*selectRuntime*/
+            grid-area: runtime-select;
+            justify-self: left;
+        }
+
+        body > :nth-child(3) { /*selectParser*/
+            grid-area: parser-select;
+            justify-self: left;
+        }
+
+        body > :nth-child(4) { /*selectCompiler*/
+            grid-area: compiler-select;
+            justify-self: left;
+        }
+
+        body > :nth-child(5) { /*editorCode*/
+            grid-area: code-editor;
+        }
+
+        body > :nth-child(6) { /*editorRuntime*/
+            grid-area: runtime-editor;
+        }
+
+        body > :nth-child(7) { /*editorParser*/
+            grid-area: parser-editor;
+        }
+
+
+        body > :nth-child(8) { /*runButton*/
+            grid-area: run;
+            justify-self: center;
+            min-width: 80px;
+        }
+
+        body > :nth-child(9) { /*ConsoleNode*/
+            grid-area: output;
+            background-color: var(--color-surface);
+            color: var(--color-on-surface);
+        }
+
+    </style>
+
+</head>
+<body class="container">
+</body>
+<script type="module">
+    import("./script/playground/index.js").then(({ init }) => init(document.body))
+    document.querySelectorAll("script").forEach(node => node.remove())
+</script>
+</html>

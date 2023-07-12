@@ -1,0 +1,105 @@
+:root {
+
+    /*--form-field-background-color: #fbeee0;*/
+    --form-field-background-color: var(--color-secondary);
+    --form-field-color: var(--color-on-secondary);
+    --form-field-hover-bg: var(--color-secondary);
+
+
+    --form-field-box-shadow: var(--color-secondary-dark1) 4px 4px 0 0;
+    --form-field-box-shadow-active: #422800 2px 2px 0 0;
+    --form-field-transform-active: translate(2px, 2px);;
+    --form-field-border: 2px solid var(--color-secondary-middle);
+    --form-field-margin: 0px 4px 4px 0;
+}
+
+select, button {
+    background-color: var(--form-field-background-color);
+    box-shadow: var(--form-field-box-shadow);
+    border: var(--form-field-border);
+    color: var(--form-field-color);
+    margin: var(--form-field-margin);
+}
+
+select:hover, button:hover {
+    background-color: var(--form-field-hover-bg);
+    /*filter: brightness(85%);*/
+}
+
+select {
+    /* styling */
+
+    border-radius: 4px;
+
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+
+
+    font: inherit;
+    padding: 0 36px 0 0;
+
+    /* reset */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+select {
+    --tick-size: 6px;
+    background-image: linear-gradient(45deg, transparent 50%, #422800 50%),
+    linear-gradient(135deg, #422800 50%, transparent 50%),
+    linear-gradient(to right, #422800, #422800);
+    background-position: calc(100% - 16px) calc(50%),
+    calc(100% - 16px + var(--tick-size)) calc(50%),
+    calc(100% - 32px) 4px;
+    background-size: var(--tick-size) var(--tick-size),
+    var(--tick-size) var(--tick-size),
+    1px calc(100% - 8px);
+    background-repeat: no-repeat;
+}
+
+
+select:focus {
+    background-image: linear-gradient(135deg, transparent 50%, #422800 50%),
+    linear-gradient(45deg, #422800 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+    background-repeat: no-repeat;
+    border-color: green;
+    outline: 0;
+}
+
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+
+button {
+    /*https://getcssscan.com/css-buttons-examples?ref=beautifulboxshadow-bottom*/
+    border-radius: 500px;
+    cursor: pointer;
+    display: inline-block;
+
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+
+button:active {
+    box-shadow: var(--form-field-box-shadow-active);
+    transform: var(--form-field-transform-active);
+}
+
+@media (min-width: 768px) {
+    button {
+        min-width: 120px;
+        padding: 0 25px;
+    }
+}

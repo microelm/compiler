@@ -1,0 +1,25 @@
+File                <- ModuleDefinition TypeDefinition* Function TypeDefinition* Function* Spacing EndOfFile
+
+ModuleDefinition    <- "module" RequiredSpacing ModuleName RequiredSpacing "exposing" RequiredSpacing ModuleExposing
+ModuleName          <- TypeIdentifier ("." TypeIdentifier)*
+ModuleExposing      <- "(" Spacing ".." Spacing ")" / "(" Spacing ModuleExposeName (Spacing "," Spacing ModuleExposeName)* Spacing ")"
+ModuleExposeName    <- FunctionName / TypeIdentifier
+
+Function            <- _* EndOfLine+ Spacing FunctionName Spacing "=" Spacing FunctionReturn
+FunctionName        <- <variableDeclaration> {FunctionName}
+FunctionReturn      <- <intLiteral> {FunctionReturn}
+
+TypeDefinition      <- EndOfLine+ FunctionName Spacing TypeSeparator Spacing TypeIdentifier
+
+TypeIdentifier      <- [A-Z] [a-zA-Z0-9_']*
+TypeSeparator       <- ":"
+
+variableDeclaration <- [a-z_] [a-zA-Z0-9_']*
+intLiteral          <- [0-9]+
+
+_                   <- [ \t]
+Spacing             <- ( _ / EndOfLine )*
+RequiredSpacing     <- (_ / EndOfLine) Spacing
+
+EndOfLine           <- '\r\n' / '\n' / '\r'
+EndOfFile           <- EndOfLine* !.

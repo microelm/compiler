@@ -1,0 +1,8 @@
+const exports = wasm.instance.exports
+console.log(
+  exports.doAdd8And4(),
+  exports.doSub8And4(),
+  exports.doMul8And4(),
+  exports.doDiv8And4(),
+  exports.makeRemainderBy37And12(),
+)

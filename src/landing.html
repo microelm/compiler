@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>uElm</title>
+    <link rel="stylesheet" href="script/playground/reset.css">
+    <style>
+        html, body {
+            height: 100%;
+            background-color: #040016;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+
+        .line-shadow {
+            background-image: linear-gradient(to bottom, #D12EF9, #320784 10%, transparent);
+        }
+
+
+        @keyframes example {
+            0% {
+                background-position: 50% 0
+            }
+            100% {
+                background-position: 50% 100px;
+            }
+        }
+
+        header {
+            width: 100%;
+            height: 100%;
+            perspective: 400px;
+            overflow: hidden;
+        }
+
+        header::after {
+            display: block;
+            content: "";
+            width: 400%;
+            height: 100%;
+            --delme: 0px;
+
+            transform-origin: center bottom;
+            transform: translateX(calc(-50% + 0.25 * 50%)) rotateX(63deg);
+            background-image: linear-gradient(to bottom, transparent, transparent 2px, #EE81FB 2px, #EE81FB 9px, transparent 9px),
+            linear-gradient(to right, transparent, transparent 1px, #D12EF9 1px, #D12EF9 2px, #EE81FB 2px, #EE81FB 9px, #D12EF9 9px, #D12EF9 10px, transparent 10px),
+            linear-gradient(to bottom, #14023E, #14023E 1px, #D12EF9 1px, #D12EF9 2px, #EE81FB 2px, #EE81FB 9px, #D12EF9 9px, #D12EF9 10px, transparent 10px),
+            linear-gradient(to bottom, transparent, transparent 10px, #D12EF9 10px, #320784 11px, transparent 50px, transparent),
+            linear-gradient(to right, transparent, transparent 10px, #D12EF9 10px, #320784 11px, transparent 14px, transparent),
+            linear-gradient(to left, #320784, transparent 3px, transparent);
+
+            background-size: 1100px 100px;
+
+            animation-name: example;
+            animation-duration: 0.75s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            will-change: background-position;
+        }
+    </style>
+</head>
+<body>
+<header>
+    im header
+</header>
+
+</body>
+</html>

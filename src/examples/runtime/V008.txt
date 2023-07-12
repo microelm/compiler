@@ -1,0 +1,4 @@
+const exports = wasm.instance.exports
+console.log(
+  exports.doAdd(5, 10)
+)

@@ -1,0 +1,95 @@
+*, pre {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/*/
+.editing, .highlighting {
+    /* Both elements need the same text and space styling so they are directly on top of each other */
+
+    font-family: "Fira Code", monospace;
+    border: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.editing,
+.highlighting,
+.highlighting * {
+    /* Also add text styles to highlighing tokens */
+    font-size: 15pt;
+    font-family: monospace;
+    line-height: 20pt;
+    tab-size: 2;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+}
+
+.editing, .highlighting {
+    /* In the same place */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+/* Move the textarea in front of the result */
+
+.editing {
+    z-index: 1;
+}
+
+.highlighting {
+    z-index: 0;
+
+}
+
+
+/* Make textarea almost completely transparent */
+
+.editing {
+    color: transparent;
+    background: transparent;
+    caret-color: rgb(229 229 229);; /* Or choose your favourite color */
+}
+
+/* Can be scrolled */
+.editing, .highlighting {
+    box-sizing: border-box;
+    padding: 3px;
+    overflow: auto;
+    white-space: nowrap; /* Allows textarea to scroll horizontally */
+}
+
+/* No resize on textarea */
+.editing {
+    resize: none;
+}
+
+/* Paragraphs; First Image */
+
+p code {
+    border-radius: 2px;
+    background-color: #1c1c1c;
+    color: #111;
+}
+
+
+/* Code blocks */
+pre.highlighting {
+    overflow: auto;
+    background-color: #1C1D1F;
+}
+
+pre.highlighting > code {
+    color: white;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    box-shadow: none;
+    white-space: normal;
+}

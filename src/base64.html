@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Base64</title>
+</head>
+<body>
+<script type="module">
+    // function base64ToArrayBuffer(base64) {
+    //     const binary_string = window.atob(base64)
+    //     const len = binary_string.length
+    //     const bytes = new Uint8Array(len)
+    //     for (let i = 0; i < len; i++) {
+    //         bytes[i] = binary_string.charCodeAt(i)
+    //     }
+    //     return bytes.buffer
+    // }
+    //
+    // const base64_string = "A8A="
+    // const bytes = Uint8Array.from(atob(base64_string), c => c.charCodeAt(0))
+    // WebAssembly.instantiate(bytes, importObject).then(console.log)
+
+    import { getPackage } from "./script/elm.js"
+
+    (async () => {
+        const Package = await getPackage("/MainBase64.elm")
+        Package.init({ node: document.body })
+        const base64_string = "AGFzbQEAAAABBQFgAAF/AwIBAAcJAQVoZWxsbwAACgoBCABBAUECag8LAAoEbmFtZQIDAQAA"
+        // console.log(Package)
+    })()
+</script>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "code": "module Main.Test exposing (..)\nmain = 42",
+  "runtime": "const { instance } = wasm\nconsole.log(\n  wasm\n  .instance\n  .exports\n  .main()\n)",
+  "parser": "File                <- ModuleDefinition EndOfLine Function EndOfFile\nModuleDefinition    <- \"module Main.Test exposing (..)\"\n\nFunction            <- FunctionName \" = \" FunctionReturn\nFunctionName        <- <variableDeclaration> {FunctionName}\nFunctionReturn      <- <intLiteral> {FunctionReturn}\n\nvariableDeclaration <- [a-z_] [a-zA-Z0-9_']*\nintLiteral          <-  [0-9]+\nEndOfLine           <- '\\r\\n' / '\\n' / '\\r'\nEndOfFile           <- EndOfLine* !."
+}

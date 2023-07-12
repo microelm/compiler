@@ -1,0 +1,6 @@
+const { instance } = wasm
+const exports = wasm.instance.exports
+console.log(
+  exports.main(),
+  exports.nice()
+)

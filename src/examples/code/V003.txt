@@ -1,0 +1,4 @@
+module Main.Test exposing (..)
+
+main : Int
+main = 3

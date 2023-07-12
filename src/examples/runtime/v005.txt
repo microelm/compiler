@@ -1,0 +1,1 @@
+ console.log(`Example 5: "main = ${wasm.instance.exports.main()}"`)

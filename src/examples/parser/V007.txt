@@ -1,0 +1,41 @@
+File                  <- ModuleDefinition TypeDefinition* Function TypeDefinition* Function* Spacing EndOfFile
+
+ModuleDefinition      <- "module" RequiredSpacing ModuleName RequiredSpacing "exposing" RequiredSpacing ModuleExposing
+ModuleName            <- TypeIdentifier ("." TypeIdentifier)*
+ModuleExposing        <- "(" Spacing ".." Spacing ")" / "(" Spacing ModuleExposeName (Spacing "," Spacing ModuleExposeName)* Spacing ")"
+ModuleExposeName      <- FunctionName / TypeIdentifier
+
+Function              <- NewLineSpacing FunctionName Spacing "=" Spacing FunctionBody
+FunctionName          <- <variableDeclaration> {FunctionName}
+FunctionBody          <- FunctionReturn / FunctionCall
+FunctionReturn        <- <intLiteral> {FunctionReturn}
+
+
+FunctionCall          <- {RULE_Call_Start} (NativeFunctionName RequiredSpacing+ Arg1 RequiredSpacing+ Arg2) {RULE_Call_End}
+NativeFunctionName    <- (<"(+)"> / <"(-)"> / <"(^)"> / <"(*)"> / <"(/)">/ <"(//)"> / <"remainderBy">) {RULE_NativeFunctionName}
+Arg1                  <- (ArgRef / ArgLiteral) {RULE_Arg1}
+Arg2                  <- (ArgRef / ArgLiteral) {RULE_Arg2}
+ArgRef                <- <variableDeclaration> {RULE_ArgRef}
+ArgLiteral            <- <intLiteral> {RULE_ArgLiteral}
+
+TypeDefinition        <- NewLineSpacing FunctionName Spacing TypeSeparator Spacing TypeIdentifier
+
+TypeIdentifier        <- [A-Z] [a-zA-Z0-9_']*
+TypeSeparator         <- ":"
+
+variableDeclaration   <- [a-z_] [a-zA-Z0-9_']*
+intLiteral            <- [0-9]+
+
+_                     <- [ \t]
+Spacing               <- ( _ / EndOfLine / Comment)*
+RequiredSpacing       <- (_ / EndOfLine / MultiLineComment) Spacing
+NewLineSpacing        <- _* MultiLineComment* SingleLineComment* EndOfLine Spacing
+
+Comment               <- SingleLineComment / MultiLineComment
+MultiLineComment      <- MultiLineCommentOpen ( !MultiLineCommentClose . )* MultiLineCommentClose
+MultiLineCommentOpen  <- "{-"
+MultiLineCommentClose <- "-}"
+SingleLineComment     <- '--' ( !EndOfLine . )*
+
+EndOfLine             <- '\r\n' / '\n' / '\r'
+EndOfFile             <- EndOfLine* !.

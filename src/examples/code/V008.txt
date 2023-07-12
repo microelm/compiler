@@ -1,0 +1,3 @@
+module Main.Test exposing (..)
+
+doAdd a b = (+) a b

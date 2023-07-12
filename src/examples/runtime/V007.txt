@@ -1,0 +1,5 @@
+const exports = wasm.instance.exports
+console.log(`
+1(a): ${exports.a0()}
+2(doAdd): ${exports.doAdd()}
+`)
