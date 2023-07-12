@@ -2,7 +2,7 @@ SHELL := bash
 .ONESHELL:
 .SHELLFLAGS := -eu -o pipefail -c
 .DELETE_ON_ERROR:
-.DEFAULT_GOAL := run
+.DEFAULT_GOAL := build
 
 ELM ?= elm
 BUILD_DIR ?= ./build.nosync
